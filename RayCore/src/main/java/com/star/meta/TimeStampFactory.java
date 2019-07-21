@@ -2,5 +2,5 @@ package com.star.meta;
 
 public interface TimeStampFactory {
 
-    long getTimeStamp();
+    long getTimeStamp(long index);
 }

@@ -15,7 +15,7 @@ public class MetaConstants {
     /**
      * 描述 : 机器标识位数
      */
-    public static final long MACHINE_ID_BITS = 10L;
+    public static final long MACHINE_ID_BITS = 9L;
 
     /**
      * 描述 : domain标识位数

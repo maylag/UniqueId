@@ -2,7 +2,7 @@ package com.star.generator;
 
 import com.star.config.Injectors;
 import com.star.meta.MachineIdFactory;
-import com.star.meta.PartitionFactory;
+import com.star.meta.Partitions;
 import com.star.meta.SequenceFactory;
 import com.star.meta.TimeStampFactory;
 
@@ -29,9 +29,6 @@ public final class IdGenerator {
     private TimeStampFactory timeStampFactory;
 
     @Inject
-    private PartitionFactory partitionFactory;
-
-    @Inject
     private SequenceFactory sequenceFactory;
 
     private IdGenerator(){
@@ -52,7 +49,7 @@ public final class IdGenerator {
         long machineId = machineIdFactory.getMachineId();
 
         // 获取分区
-        long index = partitionFactory.getIndex(domain);
+        long index = Partitions.getIndex(domain);
 
         // 获取时间戳, max(current, last)
         long timeStamp = timeStampFactory.getTimeStamp(index);

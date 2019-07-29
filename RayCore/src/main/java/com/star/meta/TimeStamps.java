@@ -50,9 +50,8 @@ public final class TimeStamps {
         if (lastTimeStamps[index] == null) {
             synchronized (this) {
                 if (lastTimeStamps[index] == null) {
-                    // 远程获取最后的时间戳
-                    long initTimeStamp = initTimeStampFactory.getTimeStamp(index);
-                    if (initTimeStamp == 0) initTimeStamp = System.currentTimeMillis();
+                    // 远程获取最后的时间戳，从下一位毫秒开始计算sequence
+                    long initTimeStamp = initTimeStampFactory.getTimeStamp(index) + 1;
                     AtomicLong atomicLong = new AtomicLong(initTimeStamp);
                     lastTimeStamps[index] = atomicLong;
                 }

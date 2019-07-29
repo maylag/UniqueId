@@ -4,7 +4,7 @@ import com.star.config.Injectors;
 import com.star.meta.MachineIdFactory;
 import com.star.meta.Partitions;
 import com.star.meta.SequenceFactory;
-import com.star.meta.TimeStampFactory;
+import com.star.meta.InitTimeStampFactory;
 
 import javax.inject.Inject;
 
@@ -26,7 +26,7 @@ public final class IdGenerator {
     private MachineIdFactory machineIdFactory;
 
     @Inject
-    private TimeStampFactory timeStampFactory;
+    private InitTimeStampFactory timeStampFactory;
 
     @Inject
     private SequenceFactory sequenceFactory;

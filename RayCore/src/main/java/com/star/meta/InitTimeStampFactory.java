@@ -1,6 +1,6 @@
 package com.star.meta;
 
-public interface TimeStampFactory {
+public interface InitTimeStampFactory {
 
     long getTimeStamp(long index);
 }

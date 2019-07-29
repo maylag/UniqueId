@@ -1,6 +1,6 @@
 package com.star.meta;
 
-import static com.star.constant.CommonConstant.MAX_DOMAIN_ID;
+import static com.star.constant.MetaConstants.MAX_DOMAIN_ID;
 
 /**
  * @program: Ray

@@ -8,7 +8,7 @@ import com.star.meta.TimeStampFactory;
 
 import javax.inject.Inject;
 
-import static com.star.constant.CommonConstant.*;
+import static com.star.constant.MetaConstants.*;
 
 /**
  * @program: Ray
@@ -61,7 +61,7 @@ public final class IdGenerator {
         long sequence = sequenceFactory.getSequence(index, timeStamp);
 
         // 根据元数据生成ID
-        return ((timeStamp - TWEPOCH) << TIMESTAMP_LEFT_SHIFT) | (machineId << MACHINE_ID_SHIFT) | (index << DOMAIN_ID_SHIFT) | sequence;
+        return (timeStamp << TIMESTAMP_LEFT_SHIFT) | (machineId << MACHINE_ID_SHIFT) | (index << DOMAIN_ID_SHIFT) | sequence;
     }
 
 }

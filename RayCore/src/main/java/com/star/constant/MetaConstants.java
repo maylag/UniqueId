@@ -6,11 +6,11 @@ package com.star.constant;
  * @author: liu na
  * @create: 2019-07-25 10:27
  */
-public class CommonConstant {
+public class MetaConstants {
     /**
      * 描述 : 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
      */
-    public static final long TWEPOCH = 1288834974657L;
+    public static final long ORIGIN_TIME_STAMP = 1564379456205L;
 
     /**
      * 描述 : 机器标识位数

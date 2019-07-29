@@ -31,7 +31,7 @@ public final class TimeStamps {
      * @param lastTimeStamp
      * @param expectedValue
      * @param newValue
-     * @return max(lastTimeStamp.get (), newValue)
+     * @return max(lastTimeStamp.get, newValue)
      */
     private long cas(AtomicLong lastTimeStamp, long expectedValue, long newValue) {
         // CAS成功，直接返回newValue

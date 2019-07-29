@@ -1,6 +1,7 @@
 package com.star.meta;
 
 import com.google.inject.Inject;
+import com.star.constant.MetaConstants;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -14,7 +15,10 @@ public final class TimeStamps {
     public long getTimeStamp(int index) {
         // 初始化lastTimeStamp, 使用双检锁
         initLastTimeStamp(index);
-        AtomicLong lastTimeStamp = lastTimeStamps[index];
+        return calculate(lastTimeStamps[index]) - MetaConstants.ORIGIN_TIME_STAMP;
+    }
+
+    private long calculate(AtomicLong lastTimeStamp) {
         long currentTimeMillis = System.currentTimeMillis();
         long lastTimeMillis = lastTimeStamp.get();
         // 当前时间大于lastTimeStamp，设置lastTimeStamp为当前时间并返回当前时间，否则直接取lastTimeStamp

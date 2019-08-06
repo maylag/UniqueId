@@ -1,10 +1,8 @@
 package com.star.generator;
 
 import com.star.config.Injectors;
-import com.star.meta.MachineIdFactory;
-import com.star.meta.Partitions;
-import com.star.meta.SequenceFactory;
-import com.star.meta.InitTimeStampFactory;
+import com.star.constant.MetaConstants;
+import com.star.meta.*;
 
 import javax.inject.Inject;
 
@@ -29,9 +27,9 @@ public final class IdGenerator {
     private InitTimeStampFactory timeStampFactory;
 
     @Inject
-    private SequenceFactory sequenceFactory;
+    private TimeAndSequences timeAndSequences;
 
-    private IdGenerator(){
+    private IdGenerator() {
         Injectors.inject(this);
     }
 
@@ -39,7 +37,7 @@ public final class IdGenerator {
         return idGenerator;
     }
 
-    public long getId(){
+    public long getId() {
         return getId(DEFAULT);
     }
 
@@ -51,14 +49,14 @@ public final class IdGenerator {
         // 获取分区
         long index = Partitions.getIndex(domain);
 
-        // 获取时间戳, max(current, last)
-        long timeStamp = timeStampFactory.getTimeStamp(index);
-
-        // 获取序列
-        long sequence = sequenceFactory.getSequence(index, timeStamp);
+        // 计算时间戳和序列
+        TimeStampAndSequence timeStampAndSequence = timeAndSequences.calculate((int) index);
 
         // 根据元数据生成ID
-        return (timeStamp << TIMESTAMP_LEFT_SHIFT) | (machineId << MACHINE_ID_SHIFT) | (index << DOMAIN_ID_SHIFT) | sequence;
+        return ((timeStampAndSequence.getTimestamp() - MetaConstants.ORIGIN_TIME_STAMP) << TIMESTAMP_LEFT_SHIFT)
+                | (machineId << MACHINE_ID_SHIFT)
+                | (index << DOMAIN_ID_SHIFT)
+                | timeStampAndSequence.getSequence();
     }
 
 }

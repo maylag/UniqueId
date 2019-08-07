@@ -1,5 +1,7 @@
 package com.star.meta;
 
+import com.star.constant.MetaConstants;
+
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -9,11 +11,8 @@ public class TimeStampAndSequence {
 
     private long sequence;
 
-    public TimeStampAndSequence() {
-    }
-
     public TimeStampAndSequence(long timestamp, long sequence) {
-        this.timestamp = timestamp;
+        this.timestamp = timestamp - MetaConstants.ORIGIN_TIME_STAMP;
         this.sequence = sequence;
     }
 
@@ -43,15 +42,8 @@ public class TimeStampAndSequence {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public long getSequence() {
         return sequence;
     }
 
-    public void setSequence(long sequence) {
-        this.sequence = sequence;
-    }
 }

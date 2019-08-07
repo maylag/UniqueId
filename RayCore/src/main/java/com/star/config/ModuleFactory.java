@@ -11,6 +11,6 @@ import com.google.inject.Module;
 public class ModuleFactory {
 
     public static Module getModule() {
-        return new RedisModule();
+        return new DemoModule();
     }
 }

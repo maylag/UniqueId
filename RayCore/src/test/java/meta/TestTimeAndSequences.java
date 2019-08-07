@@ -20,7 +20,6 @@ public class TestTimeAndSequences {
         Module module = new TestModule();
         Injector injector = Guice.createInjector(module);
         TimeAndSequences timeAndSequences = injector.getInstance(TimeAndSequences.class);
-        // 测试初始化时间戳小于当前时间的正常用例
         Set<TimeStampAndSequence> set = new HashSet<>(100000);
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         List<Future> futures = new ArrayList<>(1000);

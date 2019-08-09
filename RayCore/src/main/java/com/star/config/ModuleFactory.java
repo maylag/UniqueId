@@ -11,6 +11,15 @@ import com.google.inject.Module;
 public class ModuleFactory {
 
     public static Module getModule() {
-        return new DemoModule();
+        String style = RayConfig.get(RayConfig.MIDDLEWARE_STYLE);
+        if ("none".equalsIgnoreCase(style)) {
+            return new DemoModule();
+        } else if ("redis".equalsIgnoreCase(style)) {
+            return new RedisModule();
+        } else if ("zookeeper".equalsIgnoreCase(style)) {
+            return new ZookeeperModule();
+        } else {
+            throw new IllegalArgumentException(style);
+        }
     }
 }

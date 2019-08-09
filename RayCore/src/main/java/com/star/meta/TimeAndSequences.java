@@ -52,4 +52,8 @@ public final class TimeAndSequences {
                 ? new TimeStampAndSequence(timeStamp + 1, 0)
                 : new TimeStampAndSequence(timeStamp, currentSequence);
     }
+
+    public static AtomicReference<TimeStampAndSequence>[] getAtomicReferences() {
+        return atomicReferences;
+    }
 }

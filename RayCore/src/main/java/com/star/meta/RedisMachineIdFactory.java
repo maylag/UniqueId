@@ -4,9 +4,7 @@ import com.star.constant.MetaConstants;
 import com.star.support.redis.Lock;
 import com.star.support.redis.RedisConnections;
 import com.star.support.redis.RedisLock;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.star.util.TimerUtil;
 
 /**
  * @program: Ray
@@ -23,16 +21,11 @@ public class RedisMachineIdFactory implements MachineIdFactory {
     private volatile Long machineId;
 
     public RedisMachineIdFactory() {
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (machineId != null) {
-                    RedisConnections.getConnection(6).sync().expire(LOCK_MACHINE + machineId, 10 * 60);
-                }
+        TimerUtil.schedule(() -> {
+            if (machineId != null) {
+                RedisConnections.getConnection(6).sync().expire(LOCK_MACHINE + machineId, 10 * 60);
             }
-        };
-        timer.schedule(timerTask, 0, 5 * 60 * SECONDS);
+        }, 0, 5 * 60 * SECONDS);
     }
 
     @Override
@@ -49,9 +42,8 @@ public class RedisMachineIdFactory implements MachineIdFactory {
 
     private long lockId(long id, int tryTime) {
         if (tryTime > MetaConstants.MAX_MACHINE_ID) throw new RuntimeException("cannot get machine id");
-        try (Lock lock = new RedisLock(LOCK_MACHINE + id, 0, 10 * 60 * SECONDS)) {
-            return lock.lock() ? machineId : lockId((machineId + 1) & MetaConstants.MAX_MACHINE_ID, tryTime + 1);
-        }
+        Lock lock = new RedisLock(LOCK_MACHINE + id, 0, 10 * 60 * SECONDS);
+        return lock.lock() ? id : lockId((id + 1) & MetaConstants.MAX_MACHINE_ID, tryTime + 1);
     }
 
 }

@@ -16,4 +16,9 @@ public class TestGuice {
         IdGenerator idGenerator = IdGenerator.getInstance();
         idGenerator.getId();
     }
+
+    @Test
+    public void test2(){
+
+    }
 }

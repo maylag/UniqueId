@@ -5,13 +5,11 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.star.meta.TimeAndSequences;
 import com.star.meta.TimeStampAndSequence;
+import io.netty.util.internal.ConcurrentSet;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class TestTimeAndSequences {
 
@@ -20,16 +18,18 @@ public class TestTimeAndSequences {
         Module module = new TestModule();
         Injector injector = Guice.createInjector(module);
         TimeAndSequences timeAndSequences = injector.getInstance(TimeAndSequences.class);
-        Set<TimeStampAndSequence> set = new HashSet<>(100000);
-        ExecutorService executorService = Executors.newFixedThreadPool(100);
+        Set<TimeStampAndSequence> set = new ConcurrentSet<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         List<Future> futures = new ArrayList<>(1000);
         Runnable runnable = () -> {
             for (int i = 0; i < 10000; i++) {
                 int index = new Random().nextInt(4);
-                TimeStampAndSequence calculate = timeAndSequences.calculate(index);
-//                if (!set.add(calculate)) {
-//                    throw new RuntimeException(calculate.toString());
-//                }
+                TimeStampAndSequence calculate = timeAndSequences.calculate(1);
+                if (!set.add(calculate)) {
+                     throw new RuntimeException(calculate.toString());
+//                    System.out.println(calculate + " is dup");
+
+                }
 
             }
         };

@@ -1,6 +1,7 @@
 package com.star.generator;
 
 import com.star.config.Injectors;
+import com.star.constant.MetaConstants;
 import com.star.meta.MachineIdFactory;
 import com.star.meta.Partitions;
 import com.star.meta.TimeAndSequences;
@@ -51,10 +52,10 @@ public final class IdGenerator {
         // 计算时间戳和序列
         TimeStampAndSequence timeStampAndSequence = timeAndSequences.calculate((int) index);
 
-        System.out.println("time is " + timeStampAndSequence.getTimestamp() + " machineId is " + machineId + " index is " + index + " sequence is " + timeStampAndSequence.getSequence());
+//        System.out.println("time is " + timeStampAndSequence.getTimestamp() + " machineId is " + machineId + " index is " + index + " sequence is " + timeStampAndSequence.getSequence());
 
         // 根据元数据生成ID
-        return (timeStampAndSequence.getTimestamp() << TIMESTAMP_LEFT_SHIFT)
+        return ((timeStampAndSequence.getTimestamp() - MetaConstants.ORIGIN_TIME_STAMP) << TIMESTAMP_LEFT_SHIFT)
                 | (machineId << MACHINE_ID_SHIFT)
                 | (index << DOMAIN_ID_SHIFT)
                 | timeStampAndSequence.getSequence();

@@ -17,7 +17,13 @@ public final class TimeAndSequences {
         AtomicReference<TimeStampAndSequence> atomicReference = atomicReferences[index];
         TimeStampAndSequence timeStampAndSequence = atomicReference.get();
         TimeStampAndSequence newTimeStampAndSequence = buildNewTimeStampAndSequence(timeStampAndSequence);
-        return atomicReference.compareAndSet(timeStampAndSequence, newTimeStampAndSequence) ? newTimeStampAndSequence : calculate(index);
+        return cas(atomicReference, timeStampAndSequence, newTimeStampAndSequence) ? newTimeStampAndSequence : calculate(index);
+    }
+
+    private boolean cas(AtomicReference<TimeStampAndSequence> atomicReference, TimeStampAndSequence oldOne, TimeStampAndSequence newOne) {
+        boolean b = !oldOne.equals(newOne) && atomicReference.compareAndSet(oldOne, newOne);
+//        System.out.println("old: " + oldOne + " ,new: " + newOne + " is " + b);
+        return b;
     }
 
     private void initTimeStampAndSequence(int index) {

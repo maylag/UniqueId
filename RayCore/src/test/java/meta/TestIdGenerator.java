@@ -21,10 +21,9 @@ public class TestIdGenerator {
             for (int i = 0; i < 10000; i++) {
                 int index = new Random().nextInt(4);
                 long id = instance.getId(index + "123");
-                System.out.println(id);
-//                if (!set.add(id)) {
-//                    throw new RuntimeException(id + "");
-//                }
+                if (!set.add(id)) {
+                    throw new RuntimeException(id + "");
+                }
 
             }
         };

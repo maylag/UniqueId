@@ -21,9 +21,7 @@ public final class TimeAndSequences {
     }
 
     private boolean cas(AtomicReference<TimeStampAndSequence> atomicReference, TimeStampAndSequence oldOne, TimeStampAndSequence newOne) {
-        boolean b = !oldOne.equals(newOne) && atomicReference.compareAndSet(oldOne, newOne);
-//        System.out.println("old: " + oldOne + " ,new: " + newOne + " is " + b);
-        return b;
+        return !oldOne.equals(newOne) && atomicReference.compareAndSet(oldOne, newOne);
     }
 
     private void initTimeStampAndSequence(int index) {

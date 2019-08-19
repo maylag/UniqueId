@@ -24,6 +24,6 @@ Ray使用Max（上次时间戳，本次时间戳）为时间戳进行递增序�
 
 对于机器重启导致的上次时间戳丢失，在时钟回拨时可能会存在的问题，Ray通过中间件定时同步上次时间戳去保证，并在初始化时进行恢复。
 
-Ray的结果如下：
+Ray的结构如下：
 ![avatar](https://raw.githubusercontent.com/KeshawnVan/Ray/master/image/Ray.png)
 可以看到Ray从时间戳和机器标识中各抽走了一位新增了分区位，新增两位的分区位可以提高并发性能。并且Ray内的整个并发都是使用CAS进行，本次测试每秒支持10000+/s的ID生成性能。

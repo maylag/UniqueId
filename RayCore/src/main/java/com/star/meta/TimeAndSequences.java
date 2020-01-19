@@ -7,32 +7,30 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public final class TimeAndSequences {
 
-    private static volatile AtomicReference<TimeStampAndSequence>[] atomicReferences = new AtomicReference[4];
+    private static volatile AtomicReference<TimeStampAndSequence> atomicReference;
 
     @Inject
     private InitTimeStampFactory initTimeStampFactory;
 
-    public TimeStampAndSequence calculate(int index) {
-        initTimeStampAndSequence(index);
-        AtomicReference<TimeStampAndSequence> atomicReference = atomicReferences[index];
+    public TimeStampAndSequence calculate() {
+        initTimeStampAndSequence();
         TimeStampAndSequence timeStampAndSequence = atomicReference.get();
         TimeStampAndSequence newTimeStampAndSequence = buildNewTimeStampAndSequence(timeStampAndSequence);
-        return cas(atomicReference, timeStampAndSequence, newTimeStampAndSequence) ? newTimeStampAndSequence : calculate(index);
+        return cas(atomicReference, timeStampAndSequence, newTimeStampAndSequence) ? newTimeStampAndSequence : calculate();
     }
 
     private boolean cas(AtomicReference<TimeStampAndSequence> atomicReference, TimeStampAndSequence oldOne, TimeStampAndSequence newOne) {
         return !oldOne.equals(newOne) && atomicReference.compareAndSet(oldOne, newOne);
     }
 
-    private void initTimeStampAndSequence(int index) {
-        if (atomicReferences[index] == null) {
-            synchronized (this) {
-                if (atomicReferences[index] == null) {
+    private void initTimeStampAndSequence() {
+        if (atomicReference == null) {
+            synchronized (TimeAndSequences.class) {
+                if (atomicReference == null) {
                     // 远程获取最后的时间戳，从下一位毫秒开始计算sequence
-                    long initTimeStamp = initTimeStampFactory.getTimeStamp(index) + 1;
+                    long initTimeStamp = initTimeStampFactory.getTimeStamp() + 1;
                     TimeStampAndSequence timeStampAndSequence = new TimeStampAndSequence(initTimeStamp, 0);
-                    AtomicReference<TimeStampAndSequence> reference = new AtomicReference<>(timeStampAndSequence);
-                    atomicReferences[index] = reference;
+                    atomicReference = new AtomicReference<>(timeStampAndSequence);
                 }
             }
         }
@@ -57,7 +55,7 @@ public final class TimeAndSequences {
                 : new TimeStampAndSequence(timeStamp, currentSequence);
     }
 
-    public static AtomicReference<TimeStampAndSequence>[] getAtomicReferences() {
-        return atomicReferences;
+    public static AtomicReference<TimeStampAndSequence> getAtomicReference() {
+        return atomicReference;
     }
 }

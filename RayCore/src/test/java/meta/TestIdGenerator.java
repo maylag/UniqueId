@@ -19,8 +19,7 @@ public class TestIdGenerator {
         List<Future> futures = new ArrayList<>(1000);
         Runnable runnable = () -> {
             for (int i = 0; i < 10000; i++) {
-                int index = new Random().nextInt(4);
-                long id = instance.getId(index + "123");
+                long id = instance.getId();
                 if (!set.add(id)) {
                     throw new RuntimeException(id + "");
                 }

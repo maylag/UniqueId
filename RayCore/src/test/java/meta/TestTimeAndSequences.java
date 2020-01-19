@@ -23,8 +23,7 @@ public class TestTimeAndSequences {
         List<Future> futures = new ArrayList<>(1000);
         Runnable runnable = () -> {
             for (int i = 0; i < 10000; i++) {
-                int index = new Random().nextInt(4);
-                TimeStampAndSequence calculate = timeAndSequences.calculate(1);
+                TimeStampAndSequence calculate = timeAndSequences.calculate();
                 if (!set.add(calculate)) {
                      throw new RuntimeException(calculate.toString());
 //                    System.out.println(calculate + " is dup");

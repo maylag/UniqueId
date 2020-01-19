@@ -4,7 +4,7 @@ import com.star.meta.InitTimeStampFactory;
 
 public class TestInitTimeStampFactory implements InitTimeStampFactory {
     @Override
-    public long getTimeStamp(long index) {
+    public long getTimeStamp() {
         return 0;
     }
 }
